@@ -1,0 +1,61 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id          String   @id @default(uuid())
+  username    String   @unique
+  password    String
+  role        String   @default("USER") // 'USER' | 'ADMIN'
+  karmaPoints Int      @default(0)
+  items       Item[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  loans        LoanRequest[] @relation("Loanee")
+}
+
+model Item {
+  id               String   @id @default(uuid())
+  name             String
+  description      String
+  initialCondition String
+  status           String   @default("AVAILABLE") // 'AVAILABLE' | 'LOANED'
+  ownerId          String
+  owner            User     @relation(fields: [ownerId], references: [id])
+  images           String   // Stored as JSON string
+  isPublic         Boolean  @default(true)
+  personalNotes    String   @default("")
+  tags             String   // Stored as JSON string
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  loans            LoanRequest[]
+}
+
+model LoanRequest {
+  id                  String   @id @default(uuid())
+  itemId              String
+  item                Item     @relation(fields: [itemId], references: [id])
+  
+  loaneeId            String?
+  loanee              User?    @relation("Loanee", fields: [loaneeId], references: [id])
+  externalLoaneeName  String?
+  
+  loaneeObservation   String   @default("")
+  ownerStatusUpdate   String   @default("")
+  arbitrationRequested Boolean @default(false)
+  
+  status              String   @default("ACTIVE") // 'ACTIVE' | 'RETURNED'
+  
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+}
