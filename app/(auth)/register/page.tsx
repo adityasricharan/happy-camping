@@ -6,7 +6,6 @@ import Link from 'next/link';
 export default function RegisterPage() {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
-    const [type, setType] = useState('user'); // Basic toggle for demo
     const [error, setError] = useState('');
     const [loading, setLoading] = useState(false);
     const router = useRouter();
@@ -19,7 +18,7 @@ export default function RegisterPage() {
         const res = await fetch('/api/auth/register', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username, password, type }),
+            body: JSON.stringify({ username, password }),
         });
 
         const data = await res.json();
@@ -27,7 +26,7 @@ export default function RegisterPage() {
             setError(data.error || 'Registration failed');
             setLoading(false);
         } else {
-            router.push('/dashboard');
+            router.push('/');
         }
     };
 
@@ -59,18 +58,6 @@ export default function RegisterPage() {
                             required
                             minLength={6}
                         />
-                    </div>
-                    <div className="input-group">
-                        <label className="input-label" htmlFor="role">Role Type</label>
-                        <select
-                            id="role"
-                            className="input-field"
-                            value={type}
-                            onChange={(e) => setType(e.target.value)}
-                        >
-                            <option value="user">Standard User</option>
-                            <option value="admin">Administrator (For Demo)</option>
-                        </select>
                     </div>
                     <button type="submit" className="btn btn-primary w-full mt-4" disabled={loading} style={{ width: '100%' }}>
                         {loading ? 'Creating...' : 'Register'}

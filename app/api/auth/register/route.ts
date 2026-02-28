@@ -19,7 +19,7 @@ export async function POST(request: Request) {
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
-        const role = type === 'admin' ? 'ADMIN' : 'USER'; // Only for demonstration; naturally you might restrict admin creation
+        const role = 'USER'; // Hardcoded to prevent privilege escalation via public API
 
         const user = await prisma.user.create({
             data: {
