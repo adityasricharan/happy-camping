@@ -18,6 +18,10 @@ export async function POST(request: Request) {
             return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });
         }
 
+        if (!user.isActive) {
+            return NextResponse.json({ error: 'This account has been deactivated by an administrator.' }, { status: 403 });
+        }
+
         const isMatch = await bcrypt.compare(password, user.password);
         if (!isMatch) {
             return NextResponse.json({ error: 'Invalid credentials' }, { status: 401 });

@@ -28,6 +28,11 @@ export default async function DashboardLayout({ children }: { children: ReactNod
                         <Link href="/leaderboard" className="btn btn-secondary justify-start w-full" style={{ justifyContent: 'flex-start', width: '100%' }}>
                             Karma Leaderboard
                         </Link>
+                        {(session.role === 'ADMIN' || session.role === 'SUPERADMIN') && (
+                            <Link href="/admin/users" className="btn btn-secondary justify-start w-full" style={{ justifyContent: 'flex-start', width: '100%' }}>
+                                👥 Manage Users
+                            </Link>
+                        )}
                         <Link href="/help" className="btn btn-secondary justify-start w-full" style={{ justifyContent: 'flex-start', width: '100%' }}>
                             📖 User Manual
                         </Link>

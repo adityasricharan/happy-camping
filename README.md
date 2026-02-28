@@ -1,36 +1,68 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🏕️ CampSync Inventory Application
 
-## Getting Started
+CampSync is a robust Next.js application designed to manage, lend, and track camping equipment. This tool gives you the ability to view a global rental list, organize personal gear, and arbitrate loan returns. 
 
-First, run the development server:
+## 🚀 Local Deployment Guide
 
+Follow these instructions to safely build and spin up your own local isolated instance of the platform.
+
+### Prerequisites
+Make sure you have Node.js and NPM installed on your machine.
+- **Node.js**: v18.0.0 or higher
+- **NPM**: v9.0.0 or higher 
+
+### 1. Installation
+
+Clone this repository and install the Node runtime dependencies:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### 2. Configure Environment Variables
+Copy the `.env.example` file to create a secure, active configuration script:
+```bash
+cp .env.example .env
+```
+Ensure the `DATABASE_URL` within the `.env` file points to your local `.db` file path. It will look like this: `DATABASE_URL="file:./dev.db"`. 
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### 3. Initialize the Database
+This application uses **SQLite** as its lightweight, filesystem-bound database and **Prisma** as the ORM.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+You must push the data models (Tables) into the SQLite database to generate `dev.db`:
+```bash
+npx prisma db push
+```
 
-## Learn More
+### 4. Administrator Setup & Actions
+*Note: Administrator accounts cannot be created on the public `localhost:3000/register` website for security purposes.*
 
-To learn more about Next.js, take a look at the following resources:
+**Generate an Admin Account:**
+Generate a secure root Administrator account to manage global arbitrations on your instance:
+```bash
+npx tsx scripts/create-admin.ts <your_username> <your_password>
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+**List System Users:**
+View all registered accounts, their UUIDs, karma scores, and roles:
+```bash
+npx tsx scripts/list-users.ts
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+**Deactivate an Account:**
+If a user is abusing the system, you can strip their login privileges without touching their existing rental rows:
+```bash
+npx tsx scripts/deactivate-user.ts <target_username>
+```
 
-## Deploy on Vercel
+### 5. Launch the Application
+Start the Next.js development server:
+```bash
+npm run dev
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+The application is now actively serving! Visit [http://localhost:3000](http://localhost:3000) to create a standard account or login with your shiny new Administrator credentials. 
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+### Future Notes
+*Instructions targeting public web deployments (e.g. Vercel, Docker mapping) will be added to this document as production requirements finalize.*
