@@ -2,6 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import ReactMarkdown from 'react-markdown';
 import rehypeRaw from 'rehype-raw';
+import { prisma } from '@/lib/prisma';
 
 export default async function MarkdownViewer({ filePath }: { filePath: string }) {
     let content = '';
@@ -10,6 +11,26 @@ export default async function MarkdownViewer({ filePath }: { filePath: string })
         // Resolve the absolute path of the markdown from the 'public' directory
         const absolutePath = path.join(process.cwd(), 'public', filePath);
         content = fs.readFileSync(absolutePath, 'utf-8');
+
+        // Dynamic Injection: Fetch Password Masters
+        if (content.includes('{{PASSWORD_MASTERS}}')) {
+            const passwordMasters = await prisma.user.findMany({
+                where: {
+                    role: 'ADMIN',
+                    canResetPasswords: true,
+                    isActive: true
+                },
+                select: { username: true }
+            });
+
+            let masterListMarkdown = '*No administrators are currently authorized for manual password resets.*';
+            if (passwordMasters.length > 0) {
+                masterListMarkdown = passwordMasters.map((m: any) => `- **@${m.username}**`).join('\n');
+            }
+
+            content = content.replace('{{PASSWORD_MASTERS}}', masterListMarkdown);
+        }
+
     } catch (err) {
         console.error("Failed to read markdown content:", err);
         return <div className="text-center p-8 text-danger">Failed to load documentation file: {filePath}</div>;

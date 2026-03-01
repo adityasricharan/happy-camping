@@ -34,6 +34,28 @@ CampSync rewards users who actively participate in the community! When you loan 
 
 ---
 
+### Troubleshooting
+
+- **Item Not Listed:** If you don't see an item you expect, the owner may have set it to `Private` or it might have been unlisted by an Administrator.
+- **Can't See Admin Dashboard:** The `Admin Dashboard` button only appears for users assigned the Administrator role.
+- **Reporting Issues:** Contact your system administrator if you encounter bugs or malicious behavior.
+
+---
+
+## 🔒 Password & Account Management
+
+### Changing Your Password (Self-Service)
+You can change your password at any time by clicking the **⚙️ Settings** link in your sidebar navigation. You will need to know your current password to authorize the change.
+
+### Changing / Resetting A Lost Password
+If you have forgotten your password and cannot log in, you will need to reach out to an authorized Administrative Password Master. They can verify your identity and forcibly assign a temporary password to your account so you can log back in. 
+
+Please reach out to any of the following authorized administrators for assistance:
+
+{{PASSWORD_MASTERS}}
+
+---
+
 ## 🤝 Dispute Arbitration
 
 We track the condition of gear before and after a loan. 

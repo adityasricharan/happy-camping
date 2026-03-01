@@ -14,10 +14,11 @@ model User {
   id          String   @id @default(uuid())
   username    String   @unique
   password    String
-  role        String   @default("USER") // 'USER' | 'ADMIN' | 'SUPERADMIN'
-  isActive    Boolean  @default(true)
-  karmaPoints Int      @default(0)
-  items       Item[]
+  role              String   @default("USER") // 'USER' | 'ADMIN' | 'SUPERADMIN'
+  isActive          Boolean  @default(true)
+  canResetPasswords Boolean  @default(false)
+  karmaPoints       Int      @default(0)
+  items             Item[]
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   
