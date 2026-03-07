@@ -138,33 +138,57 @@ export default function ItemForm({ item, onClose, onRefresh }: { item?: any, onC
                         <textarea className="input-field" value={description} onChange={e => setDescription(e.target.value)} required disabled={!canEdit} rows={3} />
                     </div>
 
-                    {canEdit && (
-                        <>
-                            <div className="input-group">
-                                <label className="input-label">Images (Client Resized to avoid storage overhead)</label>
-                                <input type="file" accept="image/*" onChange={handleImageUpload} className="text-sm mt-1" />
-                                <div className="flex gap-2 mt-2 flex-wrap" style={{ display: 'flex', gap: '0.5rem', marginTop: '0.5rem', flexWrap: 'wrap' }}>
+                    {(images.length > 0 || canEdit) && (
+                        <div className="input-group">
+                            <label className="input-label">Images {canEdit && '(Client Resized to avoid storage overhead)'}</label>
+                            {canEdit && (
+                                <input type="file" accept="image/*" onChange={handleImageUpload} className="text-sm mt-1 mb-2 block" />
+                            )}
+                            {images.length > 0 && (
+                                <div className="flex gap-2 mt-2 flex-wrap" style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
                                     {images.map((src, i) => (
-                                        <img key={i} src={src} alt="Upload preview" className="h-16 w-16 object-cover rounded shadow-sm" style={{ height: '4rem', width: '4rem', objectFit: 'cover', borderRadius: '0.25rem' }} />
+                                        <div key={i} style={{ position: 'relative' }}>
+                                            <img src={src} alt="Item photo" className="h-20 w-20 object-cover rounded shadow-sm" style={{ height: '5rem', width: '5rem', objectFit: 'cover', borderRadius: '0.25rem' }} />
+                                            {canEdit && (
+                                                <button
+                                                    type="button"
+                                                    onClick={() => setImages(images.filter((_, index) => index !== i))}
+                                                    className="absolute -top-2 -right-2 bg-danger text-white rounded-full flex items-center justify-center text-xs"
+                                                    style={{ position: 'absolute', top: '-0.5rem', right: '-0.5rem', backgroundColor: 'var(--danger)', color: 'white', borderRadius: '9999px', width: '1.25rem', height: '1.25rem', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.75rem', border: 'none', cursor: 'pointer', zIndex: 10, padding: 0 }}
+                                                >
+                                                    &times;
+                                                </button>
+                                            )}
+                                        </div>
                                     ))}
                                 </div>
-                            </div>
+                            )}
+                        </div>
+                    )}
 
-                            <div className="input-group">
-                                <label className="input-label">Custom Tags</label>
-                                <div className="flex gap-2">
-                                    <input type="text" className="input-field flex-1" style={{ flex: 1 }} value={newTag} onChange={e => setNewTag(e.target.value)} placeholder="Add a tag (e.g. Tent, Winter)" onKeyDown={e => e.key === 'Enter' && (e.preventDefault(), addTag())} />
+                    {(tags.length > 0 || canEdit) && (
+                        <div className="input-group">
+                            <label className="input-label">{canEdit ? 'Custom Tags' : 'Tags'}</label>
+                            {canEdit && (
+                                <div className="flex gap-2 mb-2">
+                                    <input type="text" className="input-field flex-1" style={{ flex: 1 }} value={newTag} onChange={e => setNewTag(e.target.value)} placeholder="Add a tag..." onKeyDown={e => e.key === 'Enter' && (e.preventDefault(), addTag())} />
                                     <button type="button" className="btn btn-secondary" onClick={addTag}>Add</button>
                                 </div>
+                            )}
+                            {tags.length > 0 && (
                                 <div className="flex gap-2 mt-2 flex-wrap">
                                     {tags.map(tag => (
-                                        <span key={tag} className="badge bg-primary flex items-center gap-1 cursor-pointer" onClick={() => setTags(tags.filter(t => t !== tag))}>
-                                            {tag} &times;
+                                        <span key={tag} className="badge bg-primary flex items-center gap-1" onClick={() => canEdit && setTags(tags.filter(t => t !== tag))} style={{ cursor: canEdit ? 'pointer' : 'default' }}>
+                                            {tag} {canEdit && <>&times;</>}
                                         </span>
                                     ))}
                                 </div>
-                            </div>
+                            )}
+                        </div>
+                    )}
 
+                    {canEdit && (
+                        <>
                             <div className="input-group">
                                 <label className="input-label">Personal Notes (Only visible to you)</label>
                                 <textarea className="input-field" value={personalNotes} onChange={e => setPersonalNotes(e.target.value)} rows={2} />
@@ -172,7 +196,7 @@ export default function ItemForm({ item, onClose, onRefresh }: { item?: any, onC
 
                             <div className="flex items-center gap-2 mt-2 mb-4">
                                 <input type="checkbox" id="isPublic" checked={isPublic} onChange={e => setIsPublic(e.target.checked)} className="h-4 w-4" />
-                                <label htmlFor="isPublic" className="input-label mb-0" style={{ marginBottom: 0 }}>List publicly for friends to request</label>
+                                <label htmlFor="isPublic" className="input-label mb-0" style={{ marginBottom: 0 }}>List publicly</label>
                             </div>
                         </>
                     )}
