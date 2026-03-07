@@ -50,3 +50,8 @@ next-env.d.ts
 
 # logs
 /*.log
+
+# test scripts
+/scripts/test-agent.ts
+/scripts/seed-users.ts
+/public/images/seeds/

@@ -25,23 +25,16 @@ cp .env.example .env
 ```
 Ensure the `DATABASE_URL` within the `.env` file points to your local `.db` file path. It will look like this: `DATABASE_URL="file:./dev.db"`. 
 
-### 3. Initialize the Database
-This application uses **SQLite** as its lightweight, filesystem-bound database and **Prisma** as the ORM.
-
-You must push the data models (Tables) into the SQLite database to generate `dev.db`:
-```bash
-npx prisma db push
-```
-
-### 4. Administrator Setup & Actions
+### 3. Initialization and Administrator Setup
+We've bundled the database preparation and root administrator generation into a single interactive command.
 *Note: Administrator accounts cannot be created on the public `localhost:3000/register` website for security purposes.*
 
-**Generate an Admin Account:**
-Generate a secure root Administrator account to manage global arbitrations on your instance:
+Run the initialization wizard to automatically provision the SQLite database and create your ultimate **SUPERADMIN** account:
 ```bash
-npx tsx scripts/create-admin.ts <your_username> <your_password>
+npm run init:campsync
 ```
 
+### 4. Administrator Utilities
 **List System Users:**
 View all registered accounts, their UUIDs, karma scores, and roles:
 ```bash
