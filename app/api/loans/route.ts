@@ -52,14 +52,12 @@ export async function POST(request: Request) {
                 loaneeId: loaneeId || null,
                 externalLoaneeName: externalLoaneeName || null,
                 loaneeObservation: loaneeObservation || '',
-                status: 'ACTIVE'
+                status: 'PENDING'
             }
         });
 
-        await prisma.item.update({
-            where: { id: itemId },
-            data: { status: 'LOANED' }
-        });
+        // We DO NOT update the item to 'LOANED' here anymore. 
+        // The owner must explicitly APPROVE the loan first via the PUT route.
 
         return NextResponse.json(loan);
     } catch (error) {

@@ -30,7 +30,7 @@ model Item {
   name             String
   description      String
   initialCondition String
-  status           String   @default("AVAILABLE") // 'AVAILABLE' | 'LOANED'
+  status           String   @default("AVAILABLE") // 'AVAILABLE' | 'LOANED' | 'DISPUTED'
   ownerId          String
   owner            User     @relation(fields: [ownerId], references: [id])
   images           String   // Stored as JSON string
@@ -54,9 +54,16 @@ model LoanRequest {
   
   loaneeObservation   String   @default("")
   ownerStatusUpdate   String   @default("")
+
+  receivedCondition       String   @default("")
+  receivedConditionStatus String   @default("PENDING_OWNER_REVIEW") // 'PENDING_OWNER_REVIEW' | 'ACCEPTED' | 'DISPUTED'
+  
+  returnCondition         String   @default("")
+  returnConditionStatus   String   @default("PENDING") // 'PENDING' | 'ACCEPTED' | 'DISPUTED'
+
   arbitrationRequested Boolean @default(false)
   
-  status              String   @default("ACTIVE") // 'ACTIVE' | 'RETURNED'
+  status              String   @default("PENDING") // 'PENDING' | 'APPROVED' | 'ACTIVE' | 'RETURN_PENDING' | 'COMPLETED'
   
   createdAt           DateTime @default(now())
   updatedAt           DateTime @updatedAt
