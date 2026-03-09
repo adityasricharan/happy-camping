@@ -39,6 +39,9 @@ export default async function DashboardLayout({ children }: { children: ReactNod
                                 <Link href="/admin/arbitration" className="btn btn-secondary justify-start w-full" style={{ justifyContent: 'flex-start', width: '100%' }}>
                                     ⚖️ Arbitration
                                 </Link>
+                                <Link href="/admin/tickets" className="btn btn-secondary justify-start w-full" style={{ justifyContent: 'flex-start', width: '100%' }}>
+                                    🎟️ Service Desk
+                                </Link>
                             </>
                         )}
                         <Link href="/help" className="btn btn-secondary justify-start w-full" style={{ justifyContent: 'flex-start', width: '100%' }}>

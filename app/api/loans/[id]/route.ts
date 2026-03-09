@@ -87,6 +87,17 @@ export async function PUT(request: Request, props: { params: Promise<{ id: strin
                 // Even if disputed at receive, they still have the item. We just flag it.
                 // We could choose to escalate to Admin arbitration early here if desired.
                 updateData.arbitrationRequested = true;
+                await prisma.ticket.create({
+                    data: {
+                        title: `Gear Dispute (Receipt): ${loan.item.name}`,
+                        description: `Owner disputed the condition acceptance of the gear. Item: ${loan.item.name}.`,
+                        tag: 'GEAR_DISPUTE',
+                        status: 'OPEN',
+                        priority: 'HIGH',
+                        requesterId: session.userId,
+                        relatedEntityId: loan.id
+                    }
+                });
             }
 
         } else if (action === 'MARK_RETURNED' && (isLoanee || isOwner || isAdmin)) {
@@ -127,6 +138,18 @@ export async function PUT(request: Request, props: { params: Promise<{ id: strin
                 await prisma.item.update({
                     where: { id: loan.itemId },
                     data: { status: 'DISPUTED' }
+                });
+
+                await prisma.ticket.create({
+                    data: {
+                        title: `Gear Dispute (Return): ${loan.item.name}`,
+                        description: `Owner disputed the condition of the returned gear. Item: ${loan.item.name}.`,
+                        tag: 'GEAR_DISPUTE',
+                        status: 'OPEN',
+                        priority: 'HIGH',
+                        requesterId: session.userId,
+                        relatedEntityId: loan.id
+                    }
                 });
             }
         } else {
