@@ -2,6 +2,7 @@ import { ReactNode } from 'react';
 import Link from 'next/link';
 import { getSession, deleteSession } from '@/lib/auth';
 import { redirect } from 'next/navigation';
+import { PolaroidAsset } from '@/components/DecorativeAssets';
 
 export default async function DashboardLayout({ children }: { children: ReactNode }) {
     const session = await getSession();
@@ -55,7 +56,9 @@ export default async function DashboardLayout({ children }: { children: ReactNod
                     </nav>
                 </div>
 
-                <div className="border-t border-surface-border pt-4 mt-8" style={{ borderTop: '1px solid var(--surface-border)', paddingTop: '1rem', marginTop: '2rem' }}>
+                <PolaroidAsset />
+
+                <div className="border-t border-surface-border pt-4 mt-auto" style={{ borderTop: '1px solid var(--surface-border)', paddingTop: '1rem', marginTop: '1rem' }}>
                     <div className="text-sm font-medium mb-1">
                         {session.username}
                     </div>
@@ -69,8 +72,10 @@ export default async function DashboardLayout({ children }: { children: ReactNod
                     </form>
                 </div>
             </aside>
-            <main className="flex-1 p-8" style={{ flex: 1, padding: '2rem' }}>
-                {children}
+            <main className="flex-1 p-8 relative flex flex-col min-w-0" style={{ flex: 1, padding: '2rem' }}>
+                <div className="relative z-10 w-full">
+                    {children}
+                </div>
             </main>
         </div>
     );
