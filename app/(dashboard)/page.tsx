@@ -109,14 +109,6 @@ export default function DashboardPage() {
                 <div className="flex flex-col gap-3">
                     {items.map(item => (
                         <div key={item.id} className="card p-4 flex flex-col md:flex-row gap-4 items-start md:items-center hover:bg-surface-hover transition-colors">
-                            <div className="h-16 w-16 bg-surface-border rounded overflow-hidden shrink-0 flex items-center justify-center">
-                                {item.images && JSON.parse(item.images).length > 0 ? (
-                                    <img src={JSON.parse(item.images)[0]} alt={item.name} className="w-full h-full object-cover" />
-                                ) : (
-                                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="opacity-50 text-muted"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
-                                )}
-                            </div>
-
                             <div className="flex-1 min-w-0">
                                 <div className="flex items-center gap-2 mb-1">
                                     <h3 className="font-bold text-lg truncate">{item.name}</h3>
