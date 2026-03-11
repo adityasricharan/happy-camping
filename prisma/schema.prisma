@@ -38,6 +38,7 @@ model Item {
   images           String   // Stored as JSON string
   isPublic         Boolean  @default(true)
   personalNotes    String   @default("")
+  location         String   @default("Unspecified")
   tags             String   // Stored as JSON string
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt

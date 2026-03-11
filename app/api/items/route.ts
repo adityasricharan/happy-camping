@@ -62,7 +62,7 @@ export async function POST(request: Request) {
         if (!session) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
 
         const data = await request.json();
-        const { name, description, initialCondition, images, isPublic, personalNotes, tags } = data;
+        const { name, description, initialCondition, location, images, isPublic, personalNotes, tags } = data;
 
         if (!name || !description || !initialCondition) {
             return NextResponse.json({ error: 'Missing required fields' }, { status: 400 });
@@ -73,6 +73,7 @@ export async function POST(request: Request) {
                 name,
                 description,
                 initialCondition,
+                location: location || "Unspecified",
                 images: JSON.stringify(images || []),
                 isPublic: isPublic !== undefined ? isPublic : true,
                 personalNotes: personalNotes || '',

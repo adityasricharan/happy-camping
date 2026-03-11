@@ -21,7 +21,7 @@ export async function PUT(request: Request, props: { params: Promise<{ id: strin
 
         const data = await request.json();
 
-        const { name, description, initialCondition, status, images, isPublic, personalNotes, tags } = data;
+        const { name, description, initialCondition, location, status, images, isPublic, personalNotes, tags } = data;
 
         const updatedItem = await prisma.item.update({
             where: { id },
@@ -29,6 +29,7 @@ export async function PUT(request: Request, props: { params: Promise<{ id: strin
                 ...(name !== undefined && { name }),
                 ...(description !== undefined && { description }),
                 ...(initialCondition !== undefined && { initialCondition }),
+                ...(location !== undefined && { location }),
                 ...(status !== undefined && { status }),
                 ...(images !== undefined && { images: JSON.stringify(images) }),
                 ...(isPublic !== undefined && { isPublic }),

@@ -28,6 +28,7 @@ export default function ItemForm({ item, onClose, onRefresh }: { item?: any, onC
     const [name, setName] = useState(item?.name || '');
     const [description, setDescription] = useState(item?.description || '');
     const [initialCondition, setInitialCondition] = useState(item?.initialCondition || 'Good');
+    const [location, setLocation] = useState(item?.location || 'Unspecified');
     const [images, setImages] = useState<string[]>(item?.images ? JSON.parse(item.images) : []);
     const [isPublic, setIsPublic] = useState(item?.isPublic ?? true);
     const [personalNotes, setPersonalNotes] = useState(item?.personalNotes || '');
@@ -67,7 +68,7 @@ export default function ItemForm({ item, onClose, onRefresh }: { item?: any, onC
         if (!canEdit) return;
 
         setLoading(true);
-        const payload = { name, description, initialCondition, images, isPublic, personalNotes, tags };
+        const payload = { name, description, initialCondition, location, images, isPublic, personalNotes, tags };
         const method = isNew ? 'POST' : 'PUT';
         const url = isNew ? '/api/items' : `/api/items/${item.id}`;
 
@@ -131,6 +132,11 @@ export default function ItemForm({ item, onClose, onRefresh }: { item?: any, onC
                             <label className="input-label">Initial Condition</label>
                             <input type="text" className="input-field" value={initialCondition} onChange={e => setInitialCondition(e.target.value)} required disabled={!canEdit} placeholder="e.g. New, Slightly Used" />
                         </div>
+                    </div>
+
+                    <div className="input-group">
+                        <label className="input-label">Location</label>
+                        <input type="text" className="input-field" value={location} onChange={e => setLocation(e.target.value)} required disabled={!canEdit} placeholder="e.g. Garage Shelf A, Trunk of Car, Living Room" />
                     </div>
 
                     <div className="input-group">
